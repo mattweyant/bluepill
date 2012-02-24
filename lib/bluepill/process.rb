@@ -367,7 +367,9 @@ module Bluepill
     end
 
     def signal_process(code)
-      ::Process.kill(code.to_s.upcase, actual_pid)
+      # Need to handle 0 signals, which are a special case
+      signal = code == 0 ? 0 : code.to_s.upcase
+      ::Process.kill(signal, actual_pid)
       true
     rescue
       false
